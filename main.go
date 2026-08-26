@@ -131,8 +131,8 @@ func runODE(cfg *config.Config, dataDir string) error {
 		}
 		fmt.Printf("  querying ODE for site %s (%s)...\n", site.ID, site.Name)
 		for _, instrument := range []struct{ ihid, iid, pt, label string }{
-			{"lro", "lroc", "EDRNAC", "NAC"},
-			{"lro", "lroc", "EDRWAC", "WAC"},
+			{"LRO", "LROC", "EDRNAC4", "NAC"},
+			{"LRO", "LROC", "EDRWAC4", "WAC"},
 		} {
 			products, err := client.Query(ode.QueryParams{
 				IHID: instrument.ihid,

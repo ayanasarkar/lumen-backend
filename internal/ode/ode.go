@@ -3,18 +3,33 @@
 // Tier-3 bonus, Chandrayaan-1 M3 data via the same endpoint) matching a
 // given footprint.
 //
-// Endpoint + ihid/iid/pt confirmed against a real documented example
-// (NASA PDS API - LROC Update, topcoder.com/challenges/30045126):
+// Endpoint confirmed live against oderest.rsl.wustl.edu/live2/. The exact
+// IHID/IID/PT values were NOT guessed — they were pulled directly from
+// ODE's own self-description query:
 //
-//	http://oderest.rsl.wustl.edu/live2/?query=products&target=moon&results=mbp
-//	    &ihid=lro&iid=lroc&pt=<PT>&output=JSON
+//	https://oderest.rsl.wustl.edu/live2/?query=iipt&target=moon&ihid=lro&output=JSON
 //
-// Full manual: https://oderest.rsl.wustl.edu/ODE_REST_V2.1.6.pdf (blocked by
-// robots.txt for automated fetching, so it couldn't be verified line-by-line
-// here — if a query 404s or the JSON shape doesn't decode, check the PDF and
-// adjust this file, particularly the footprint filter param names below,
-// which are a best-effort based on the general ODE REST convention rather
-// than a confirmed live2-specific example.
+// That query returns every valid (IHID, IID, PT) combination ODE actually
+// has data for. For LRO/LROC the confirmed values are:
+//
+//	IHID=LRO, IID=LROC, PT=EDRNAC4 (PDS4 Experiment Data Record, NAC)
+//	IHID=LRO, IID=LROC, PT=EDRWAC4 (PDS4 Experiment Data Record, WAC — Color)
+//
+// (Older-looking codes like "EDRNAC"/"EDRWAC" without the "4" suffix don't
+// exist for this target — ODE's moon holdings are PDS4, not PDS3 — and
+// lowercase ihid/iid values are accepted syntactically but return
+// "Invalid IIPT" since they don't match any real dataset.)
+//
+// If a query ever starts erroring again after ODE reprocesses/renames a
+// dataset, re-run the iipt query above rather than guessing — it's the
+// authoritative source of truth, and the PDF manual
+// (https://oderest.rsl.wustl.edu/ODE_REST_V2.1.6.pdf) is blocked by
+// robots.txt for automated fetching so it can't be cross-checked here.
+// The footprint filter param names below (westernlon/easternlon/
+// minlat/maxlat) are the general ODE REST convention and were accepted by
+// live2 without error, but weren't separately confirmed to actually filter
+// correctly — watch for that if results include products far outside your
+// bbox.
 package ode
 
 import (

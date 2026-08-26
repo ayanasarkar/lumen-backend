@@ -1,0 +1,4 @@
+# PRADAN has no documented public API (see internal/pradan/pradan.go).
+# Manually download OHRC/TMC-2/IIRS L1 files for your two sites via
+# https://pradan.issdc.gov.in/ch2/ and paste the direct file URLs below,
+# one per line. Lines starting with # are ignored.

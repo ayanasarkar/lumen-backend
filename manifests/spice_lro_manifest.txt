@@ -1,0 +1,5 @@
+# LRO-specific SPICE kernel URLs (from the LRO SPICE kernel archive on
+# NAIF or PDS), covering the acquisition dates of your imagery.
+# One URL per line. Lines starting with # are ignored.
+# Generic kernels (leapseconds, planetary ephemeris) are pulled
+# automatically and don't need to go here.

@@ -1,0 +1,28 @@
+{
+  "sites": [
+    {
+      "id": "eq-01",
+      "type": "equatorial",
+      "name": "REPLACE_ME (e.g. a named mare/crater near the lunar equator)",
+      "bbox": {
+        "min_lat": 0.0,
+        "max_lat": 0.0,
+        "min_lon": 0.0,
+        "max_lon": 0.0
+      },
+      "notes": "Fill in real coordinates once the site is chosen. Keep the box small (a few km across) so PRADAN/ODE queries return a manageable number of strips."
+    },
+    {
+      "id": "polar-01",
+      "type": "polar",
+      "name": "REPLACE_ME (e.g. a named south-pole crater with PGDA coverage)",
+      "bbox": {
+        "min_lat": 0.0,
+        "max_lat": 0.0,
+        "min_lon": 0.0,
+        "max_lon": 0.0
+      },
+      "notes": "Check PGDA 5m/px DEM coverage exists for this footprint before locking it in."
+    }
+  ]
+}

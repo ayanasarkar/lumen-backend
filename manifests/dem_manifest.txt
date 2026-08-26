@@ -1,0 +1,7 @@
+# SLDEM2015 (equatorial site) + PGDA 5m/px DEM (polar site) tile URLs.
+# Find exact tile URLs for your footprint on PGDA / USGS Astropedia, then
+# paste them below, one per line. Lines starting with # are ignored.
+#
+# Kaguya TC DTM no-auth fallback is handled separately via
+# dem.KaguyaFallback() in code (needs the aws CLI) since it's an S3 path,
+# not a plain HTTPS URL.

@@ -1,0 +1,13 @@
+# Local config with your real site coordinates — don't commit this
+sites.json
+
+# Downloaded data (large, machine-specific, regenerable)
+data/
+
+# Go build artifacts
+lumen-backend
+*.exe
+*.part
+
+# OS cruft
+.DS_Store

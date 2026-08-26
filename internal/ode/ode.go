@@ -3,9 +3,18 @@
 // Tier-3 bonus, Chandrayaan-1 M3 data via the same endpoint) matching a
 // given footprint.
 //
-// API reference: https://oderest.rsl.wustl.edu/ODE_REST_V2.1.pdf
-// This client covers the "product" query used to list files for a
-// footprint + instrument, then fetches the product files themselves.
+// Endpoint + ihid/iid/pt confirmed against a real documented example
+// (NASA PDS API - LROC Update, topcoder.com/challenges/30045126):
+//
+//	http://oderest.rsl.wustl.edu/live2/?query=products&target=moon&results=mbp
+//	    &ihid=lro&iid=lroc&pt=<PT>&output=JSON
+//
+// Full manual: https://oderest.rsl.wustl.edu/ODE_REST_V2.1.6.pdf (blocked by
+// robots.txt for automated fetching, so it couldn't be verified line-by-line
+// here — if a query 404s or the JSON shape doesn't decode, check the PDF and
+// adjust this file, particularly the footprint filter param names below,
+// which are a best-effort based on the general ODE REST convention rather
+// than a confirmed live2-specific example.
 package ode
 
 import (
@@ -19,7 +28,7 @@ import (
 	"lumen-backend/internal/downloader"
 )
 
-const baseURL = "https://oderest.rsl.wustl.edu/livegds/"
+const baseURL = "https://oderest.rsl.wustl.edu/live2/"
 
 // Client wraps ODE REST queries.
 type Client struct {
@@ -33,17 +42,17 @@ func New(outDir string) *Client {
 }
 
 // Query parameters for an ODE product search. IHID/IID/PT follow ODE's
-// vocabulary, e.g.:
+// vocabulary — confirmed real values for LRO LROC:
 //
-//	Equatorial LRO NAC:  IHID=LRO-L-LROC, IID=NAC, PT=EDR
-//	LRO WAC:             IHID=LRO-L-LROC, IID=WAC, PT=EDR
-//	Chandrayaan-1 M3:    IHID=CH1-ORB,   IID=M3,  PT=RDN (Tier 3 bonus only)
+//	IHID=lro, IID=lroc, PT=EDRNAC (NAC) or PT=EDRWAC (WAC)
+//	Chandrayaan-1 M3 (Tier 3 bonus only): IHID=ch1-orb, IID=m3
 type QueryParams struct {
-	IHID       string // instrument host id
-	IID        string // instrument id
-	PT         string // product type
+	IHID       string // instrument host id, e.g. "lro"
+	IID        string // instrument id, e.g. "lroc"
+	PT         string // product type, e.g. "EDRNAC" / "EDRWAC"
 	BBox       config.BoundingBox
 	Target     string // e.g. "moon" — ODE requires this
+	Results    string // ODE "results" code, default "mbp" per documented example
 	MaxResults int
 }
 
@@ -79,25 +88,31 @@ func (c *Client) Query(p QueryParams) ([]Product, error) {
 	if p.Target == "" {
 		p.Target = "moon"
 	}
+	if p.Results == "" {
+		p.Results = "mbp" // per the documented live2 example; verify against the PDF if this doesn't behave as expected
+	}
 	if p.MaxResults == 0 {
 		p.MaxResults = 50
 	}
 
 	q := url.Values{}
+	q.Set("query", "products")
 	q.Set("target", p.Target)
 	q.Set("ihid", p.IHID)
 	q.Set("iid", p.IID)
 	if p.PT != "" {
 		q.Set("pt", p.PT)
 	}
+	q.Set("results", p.Results)
 	q.Set("output", "JSON")
-	q.Set("query", "product")
-	// ODE's footprint filter: westernlon/easternlon/minlat/maxlat.
+	// Footprint filter — TODO verify these exact param names on live2 against
+	// the PDF manual; westernlon/easternlon/minlat/maxlat is the general ODE
+	// REST convention but wasn't part of the confirmed example above.
 	q.Set("westernlon", fmt.Sprintf("%f", p.BBox.MinLon))
 	q.Set("easternlon", fmt.Sprintf("%f", p.BBox.MaxLon))
 	q.Set("minlat", fmt.Sprintf("%f", p.BBox.MinLat))
 	q.Set("maxlat", fmt.Sprintf("%f", p.BBox.MaxLat))
-	q.Set("results", fmt.Sprintf("%d", p.MaxResults))
+	q.Set("maxresults", fmt.Sprintf("%d", p.MaxResults))
 
 	reqURL := baseURL + "?" + q.Encode()
 	resp, err := c.HTTP.Get(reqURL)

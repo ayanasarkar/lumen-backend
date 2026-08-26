@@ -130,19 +130,20 @@ func runODE(cfg *config.Config, dataDir string) error {
 			return err
 		}
 		fmt.Printf("  querying ODE for site %s (%s)...\n", site.ID, site.Name)
-		for _, instrument := range []struct{ ihid, iid string }{
-			{"LRO-L-LROC", "NAC"},
-			{"LRO-L-LROC", "WAC"},
+		for _, instrument := range []struct{ ihid, iid, pt, label string }{
+			{"lro", "lroc", "EDRNAC", "NAC"},
+			{"lro", "lroc", "EDRWAC", "WAC"},
 		} {
 			products, err := client.Query(ode.QueryParams{
 				IHID: instrument.ihid,
 				IID:  instrument.iid,
+				PT:   instrument.pt,
 				BBox: site.BBox,
 			})
 			if err != nil {
-				return fmt.Errorf("ode query (%s/%s) for site %s: %w", instrument.ihid, instrument.iid, site.ID, err)
+				return fmt.Errorf("ode query (%s/%s/%s) for site %s: %w", instrument.ihid, instrument.iid, instrument.pt, site.ID, err)
 			}
-			fmt.Printf("  found %d %s products for %s\n", len(products), instrument.iid, site.ID)
+			fmt.Printf("  found %d %s products for %s\n", len(products), instrument.label, site.ID)
 			for _, p := range products {
 				if err := client.DownloadProduct(site.ID, p); err != nil {
 					return err

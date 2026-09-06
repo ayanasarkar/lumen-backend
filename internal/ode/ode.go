@@ -37,6 +37,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 	"path/filepath"
 
 	"lumen-backend/internal/config"
@@ -80,21 +81,30 @@ type oderestResponse struct {
 	} `json:"ODEResults"`
 }
 
-// Product is a single ODE result: one image strip with its metadata + files.
+// Product is a single ODE result: one image strip. Field names below were
+// taken directly from a real response (not guessed) — see the confirmed
+// sample at https://oderest.rsl.wustl.edu/live2/?query=products&target=moon
+// &ihid=lro&iid=lroc&pt=EDRNAC4&results=mbp&output=JSON for a live example.
+//
+// Important: ODE does NOT return a direct URL for the raw data file (the
+// .IMG). It only gives:
+//   - LabelURL: a direct, working URL to the PDS label (.xml)
+//   - FilesURL: a link to an ODE *webpage* listing files (HTML, not JSON)
+//   - Product_name: the raw data file's filename, e.g. "M1163340872RE.IMG"
+//
+// DownloadProduct derives the data file's URL by taking LabelURL's
+// directory and swapping in Product_name — confirmed working via a manual
+// HEAD request against a real sample (200 OK, served from S3) before this
+// was wired in. This is an inferred convention (labels and data files
+// sharing a directory), not something ODE's docs state outright, so if a
+// download 404s for a specific product, that assumption may not hold
+// mission-wide — check FilesURL by hand for that product as a fallback.
 type Product struct {
-	PDSID         string `json:"pdsid"`
-	ProductID     string `json:"ode_id"`
-	Product_files struct {
-		Product_file []ProductFile `json:"Product_file"`
-	} `json:"Product_files"`
-}
-
-// ProductFile is one downloadable file belonging to a Product (e.g. the IMG,
-// the LBL label, a browse JPEG).
-type ProductFile struct {
-	FileName    string `json:"FileName"`
-	URL         string `json:"URL"`
-	Description string `json:"Description"`
+	PDSID       string `json:"pdsid"`
+	ProductName string `json:"Product_name"`
+	LabelURL    string `json:"LabelURL"`
+	FilesURL    string `json:"FilesURL"`
+	ProductURL  string `json:"ProductURL"`
 }
 
 // Query hits the ODE "product" query endpoint for the given footprint and
@@ -148,28 +158,53 @@ func (c *Client) Query(p QueryParams) ([]Product, error) {
 	return parsed.ODEResults.Products.Product, nil
 }
 
-// DownloadProduct pulls every file belonging to one Product into
+// DownloadProduct pulls the label file (direct URL from ODE) and the raw
+// data file (derived — see the Product doc comment) into
 // <OutDir>/<siteID>/<pdsid>/.
 func (c *Client) DownloadProduct(siteID string, p Product) error {
 	destDir := filepath.Join(c.OutDir, siteID, p.PDSID)
-	for _, f := range p.Product_files.Product_file {
-		if f.URL == "" {
-			continue
+
+	if p.LabelURL != "" {
+		labelDest := filepath.Join(destDir, path.Base(p.LabelURL))
+		if err := c.fetchOne(labelDest, p.LabelURL, "label"); err != nil {
+			return err
 		}
-		dest := filepath.Join(destDir, f.FileName)
-		res, err := downloader.Fetch(downloader.Options{
-			URL:        f.URL,
-			Dest:       dest,
-			MaxRetries: 5,
-		})
-		if err != nil {
-			return fmt.Errorf("ode: downloading %s: %w", f.FileName, err)
-		}
-		status := "downloaded"
-		if res.Skipped {
-			status = "already present"
-		}
-		fmt.Printf("  [ODE] %s -> %s (%s, %d bytes)\n", f.FileName, dest, status, res.BytesTotal)
 	}
+
+	if p.LabelURL != "" && p.ProductName != "" {
+		dataURL, err := deriveDataURL(p.LabelURL, p.ProductName)
+		if err != nil {
+			return fmt.Errorf("ode: deriving data URL for %s: %w", p.PDSID, err)
+		}
+		dataDest := filepath.Join(destDir, p.ProductName)
+		if err := c.fetchOne(dataDest, dataURL, "data"); err != nil {
+			return fmt.Errorf("%w (derived URL may be wrong for this product — check %s by hand)", err, p.FilesURL)
+		}
+	}
+
 	return nil
+}
+
+func (c *Client) fetchOne(dest, srcURL, kind string) error {
+	res, err := downloader.Fetch(downloader.Options{URL: srcURL, Dest: dest, MaxRetries: 5})
+	if err != nil {
+		return fmt.Errorf("ode: downloading %s (%s): %w", kind, srcURL, err)
+	}
+	status := "downloaded"
+	if res.Skipped {
+		status = "already present"
+	}
+	fmt.Printf("  [ODE] %s (%s) -> %s (%s, %d bytes)\n", path.Base(dest), kind, dest, status, res.BytesTotal)
+	return nil
+}
+
+// deriveDataURL takes a confirmed-working LabelURL and swaps in productName
+// in the same directory, since ODE doesn't provide a direct data-file URL.
+func deriveDataURL(labelURL, productName string) (string, error) {
+	u, err := url.Parse(labelURL)
+	if err != nil {
+		return "", err
+	}
+	u.Path = path.Join(path.Dir(u.Path), productName)
+	return u.String(), nil
 }

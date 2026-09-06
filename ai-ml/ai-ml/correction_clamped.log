@@ -1,0 +1,52 @@
+====================================================================
+LUMEN BOUNDED RATIO VALIDATION & CONTRAST AUDIT: test_equatorial_site_01
+====================================================================
+
+[DIAGNOSTIC] Ratio Clamping & Dynamic Range Controls:
+  -> Correction Ratio Clamped Bounds : [0.2, 5.0]
+  -> Shadow Reliability Floor       : < 0.05 (unreliable original shadow)
+  -> Unreliable Shadow Mask Area    : 2.32% of pixels passed through raw
+  -> Raw Ref Float Range            : [105.0, 150.0]
+  -> Relit UNCLIPPED Float Range    : [21.6, 700.0]
+
+[DIAGNOSTIC] Radiometric & Dynamic Range Comparison:
+  -> RAW REF   | Range: [105, 150] | Global Std:  5.01 | Local Patch Std:  4.99
+  -> RELIT REF | Range: [ 21, 255] | Global Std: 20.17 | Local Patch Std:  7.42
+  -> Std Deviation Ratio (Relit / Raw): 4.03x (Target: ~1.0x to 1.5x)
+[LoFTR] Initializing on cpu...
+
+[LoFTR] Matching Source vs RAW Reference...
+
+[LoFTR] Matching Source vs RELIT Reference...
+
+[DIAGNOSTIC] Spatial Coverage:
+  -> Raw Match Bounding Box Coverage  : 82.9%
+  -> Relit Match Bounding Box Coverage: 59.0%
+
+--- Ground Truth Breakdown: RAW PAIR ---
+  Point 1 [120.0, 140.0] -> Raw Nearest Match Dist: 20.261 px
+  Point 2 [250.0, 310.0] -> Raw Nearest Match Dist: 184.405 px
+  Point 3 [400.0, 180.0] -> Raw Nearest Match Dist: 115.527 px
+  Point 4 [300.0, 420.0] -> Raw Nearest Match Dist: 54.377 px
+  Point 5 [180.0, 220.0] -> Raw Nearest Match Dist: 81.687 px
+  Point 1 [120.0, 140.0] -> H-Projected Reprojection Error: 9.682 px
+  Point 2 [250.0, 310.0] -> H-Projected Reprojection Error: 73.960 px
+  Point 3 [400.0, 180.0] -> H-Projected Reprojection Error: 51.565 px
+  Point 4 [300.0, 420.0] -> H-Projected Reprojection Error: 133.299 px
+  Point 5 [180.0, 220.0] -> H-Projected Reprojection Error: 27.662 px
+
+--- Ground Truth Breakdown: RELIT PAIR ---
+  Point 1 [120.0, 140.0] -> Raw Nearest Match Dist: 250.005 px
+  Point 2 [250.0, 310.0] -> Raw Nearest Match Dist: 160.683 px
+  Point 3 [400.0, 180.0] -> Raw Nearest Match Dist: 290.338 px
+  Point 4 [300.0, 420.0] -> Raw Nearest Match Dist: 53.897 px
+  Point 5 [180.0, 220.0] -> Raw Nearest Match Dist: 140.182 px
+  [WARNING] RANSAC Transform Diverged: FAILED (5 inliers, min 6 required)
+
+====================================================================
+HONEST ABLATION SUMMARY TABLE (POST RATIO-CLAMP FIX)
+====================================================================
+PAIR        | MATCHES | INLIERS (%) | MEAN CONF | H-PROJECTED RMSE | NEAREST RESIDUAL
+RAW PAIR    |      54 |  8 (14.8%) |     0.323 | 73.153 px        | 107.137 px
+RELIT PAIR  |      24 |  5 (20.8%) |     0.333 | FAILED (5 inliers, min 6 required) | 197.572 px
+====================================================================

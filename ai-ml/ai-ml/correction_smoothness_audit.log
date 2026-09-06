@@ -1,0 +1,63 @@
+====================================================================
+LUMEN SMOOTHNESS & CONTRAST AUDIT: test_equatorial_site_01
+====================================================================
+
+[DIAGNOSTIC 1] Derived Dynamic Clamp Bounds:
+  -> Raw Input Range                  : [105.0, 150.0]
+  -> Dynamic Bounds (derived)         : [0.070, 1.530]
+  -> Unclipped Intermediate Float     : [7.56, 220.32]
+  -> Ceiling Pinned @ 255             : 0.00%
+  -> Floor Pinned @ 0                 : 0.00%
+
+[DIAGNOSTIC 2] Spatial Gradient & Discontinuity Check:
+  -> Mean DEM Slope Gradient Magnitude: 4.7666
+  -> Mean Correction Map Gradient Mag : 0.0419 (Max: 6.5293)
+  -> Mean Raw Ref Image Gradient Mag  : 21.7096
+  -> Mean Relit Image Gradient Mag    : 24.2914
+  -> Feathered Shadow Region Area     : 2.29% of pixels smoothly blended
+
+[DIAGNOSTIC SUMMARY] Radiometric Summary:
+  -> RAW REF   | Range: [105, 150] | Global Std:  5.01 | Local Patch Std:  4.99
+  -> RELIT REF | Range: [  7, 220] | Global Std: 19.53 | Local Patch Std:  6.94
+  -> Std Deviation Ratio (Relit / Raw): 3.90x (Target: ~1.0x to 1.5x)
+[LoFTR] Initializing on cpu...
+
+[LoFTR] Matching Source vs RAW Reference...
+
+[LoFTR] Matching Source vs RELIT Reference...
+
+[DIAGNOSTIC] Spatial Coverage:
+  -> Raw Match Bounding Box Coverage  : 82.9%
+  -> Relit Match Bounding Box Coverage: 58.0%
+
+--- Ground Truth Breakdown: RAW PAIR ---
+  Point 1 [120.0, 140.0] -> Raw Nearest Match Dist: 20.261 px
+  Point 2 [250.0, 310.0] -> Raw Nearest Match Dist: 184.405 px
+  Point 3 [400.0, 180.0] -> Raw Nearest Match Dist: 115.527 px
+  Point 4 [300.0, 420.0] -> Raw Nearest Match Dist: 54.377 px
+  Point 5 [180.0, 220.0] -> Raw Nearest Match Dist: 81.687 px
+  Point 1 [120.0, 140.0] -> H-Projected Reprojection Error: 9.682 px
+  Point 2 [250.0, 310.0] -> H-Projected Reprojection Error: 73.960 px
+  Point 3 [400.0, 180.0] -> H-Projected Reprojection Error: 51.565 px
+  Point 4 [300.0, 420.0] -> H-Projected Reprojection Error: 133.299 px
+  Point 5 [180.0, 220.0] -> H-Projected Reprojection Error: 27.662 px
+
+--- Ground Truth Breakdown: RELIT PAIR ---
+  Point 1 [120.0, 140.0] -> Raw Nearest Match Dist: 201.858 px
+  Point 2 [250.0, 310.0] -> Raw Nearest Match Dist: 160.271 px
+  Point 3 [400.0, 180.0] -> Raw Nearest Match Dist: 145.693 px
+  Point 4 [300.0, 420.0] -> Raw Nearest Match Dist: 53.921 px
+  Point 5 [180.0, 220.0] -> Raw Nearest Match Dist: 140.149 px
+  Point 1 [120.0, 140.0] -> H-Projected Reprojection Error: 184.050 px
+  Point 2 [250.0, 310.0] -> H-Projected Reprojection Error: 324.457 px
+  Point 3 [400.0, 180.0] -> H-Projected Reprojection Error: 212.415 px
+  Point 4 [300.0, 420.0] -> H-Projected Reprojection Error: 414.117 px
+  Point 5 [180.0, 220.0] -> H-Projected Reprojection Error: 248.139 px
+
+====================================================================
+HONEST ABLATION SUMMARY TABLE (POST SMOOTHNESS & DYNAMIC CLAMP)
+====================================================================
+PAIR        | MATCHES | INLIERS (%) | MEAN CONF | H-PROJECTED RMSE | NEAREST RESIDUAL
+RAW PAIR    |      54 |  8 (14.8%) |     0.323 | 73.153 px        | 107.137 px
+RELIT PAIR  |      22 |  6 (27.3%) |     0.365 | 288.906 px       | 148.465 px
+====================================================================

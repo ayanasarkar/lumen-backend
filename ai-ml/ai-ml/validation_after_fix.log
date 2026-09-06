@@ -1,0 +1,32 @@
+
+==========================================
+RUNNING VALIDATION FOR: test_equatorial_site_01
+==========================================
+[LoFTR] Initializing on cpu...
+
+[LoFTR] Matching Source vs RAW Reference...
+
+[LoFTR] Matching Source vs RELIT Reference...
+
+--- Ground Truth Breakdown: RAW PAIR ---
+  Point 1 [120.0, 140.0] -> H-Projected Err: 9.682 px
+  Point 2 [250.0, 310.0] -> H-Projected Err: 73.960 px
+  Point 3 [400.0, 180.0] -> H-Projected Err: 51.565 px
+  Point 4 [300.0, 420.0] -> H-Projected Err: 133.299 px
+  Point 5 [180.0, 220.0] -> H-Projected Err: 27.662 px
+
+--- Ground Truth Breakdown: RELIT PAIR ---
+Traceback (most recent call last):
+  File "C:\Users\wriks\Videos\movies\LUMEN-AIML\ai-ml\run_real_validation.py", line 117, in <module>
+    run_evaluation("test_equatorial_site_01")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\wriks\Videos\movies\LUMEN-AIML\ai-ml\run_real_validation.py", line 108, in run_evaluation
+    rmse_relit, _ = evaluate_checkpoints(H_relit, mkpts0_relit, mkpts1_relit, mask_relit, gt_data, "RELIT PAIR")
+                    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\wriks\Videos\movies\LUMEN-AIML\ai-ml\run_real_validation.py", line 70, in evaluate_checkpoints
+    print("  \u26a0\ufe0f Insufficient RANSAC inliers to form reliable projective transform. Evaluating nearest correspondence residuals.")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 2-3: character maps to <undefined>

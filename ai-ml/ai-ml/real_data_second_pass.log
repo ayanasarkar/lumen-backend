@@ -1,0 +1,68 @@
+======================================================================
+LUMEN REAL-DATA BENCHMARK & ABLATION: real_equatorial_crater_01
+======================================================================
+
+[STEP 1: MULTI-RESOLUTION RATIO AUDIT]
+  -> OHRC Source Native Pixel Scale : 2.9297 m/px (1024x1024 px)
+  -> LRO NAC Reference Pixel Scale  : 2.9297 m/px (1024x1024 px)
+  -> SLDEM2015 Native Pixel Scale   : 59.0 m/px (51x51 cells)
+  -> DEM to OHRC Resolution Ratio   : 20.1x Resolution Disparity
+
+[STEP 3: RADIOMETRIC & DYNAMIC RANGE AUDIT]
+  -> RAW REF   | Range: [ 32, 159] | Global Std: 12.88 | Local Patch Std:  4.20
+  -> RELIT REF | Range: [ 45, 146] | Global Std:  9.91 | Local Patch Std:  3.23
+  -> Std Deviation Ratio (Relit / Raw): 0.77x (Target: ~1.0x to 1.5x)
+  -> Saved Visual Panel to: diagnostic_crops/real_site_ablation_side_by_side.png [Source | Raw Ref | Relit Ref]
+[LoFTR] Initializing on cpu...
+
+[LoFTR] Matching Source (OHRC) vs RAW Reference (NAC)...
+
+[LoFTR] Matching Source (OHRC) vs PRISM-RELIT Reference (NAC)...
+
+--- Ground Truth Breakdown: RAW PAIR ---
+  Central Uplift Peak  [512.0, 512.0] -> Nearest Match Dist: 374.318 px
+  NW Rim Apex          [205.0, 205.0] -> Nearest Match Dist: 563.574 px
+  SE Rim Apex          [819.0, 819.0] -> Nearest Match Dist: 434.309 px
+  NE Rim Apex          [819.0, 205.0] -> Nearest Match Dist: 6.113 px
+  SW Rim Apex          [205.0, 819.0] -> Nearest Match Dist: 392.502 px
+  NW Secondary Crater  [212.0, 262.0] -> Nearest Match Dist: 523.026 px
+  SE Secondary Crater  [832.0, 792.0] -> Nearest Match Dist: 427.623 px
+  NE Ejecta Mound      [772.0, 232.0] -> Nearest Match Dist: 830.217 px
+  SW Craterlet         [232.0, 812.0] -> Nearest Match Dist: 417.881 px
+  Central Uplift Peak  [512.0, 512.0] -> H-Projected Reprojection Error: 0.050 px
+  NW Rim Apex          [205.0, 205.0] -> H-Projected Reprojection Error: 0.024 px
+  SE Rim Apex          [819.0, 819.0] -> H-Projected Reprojection Error: 0.040 px
+  NE Rim Apex          [819.0, 205.0] -> H-Projected Reprojection Error: 0.036 px
+  SW Rim Apex          [205.0, 819.0] -> H-Projected Reprojection Error: 0.084 px
+  NW Secondary Crater  [212.0, 262.0] -> H-Projected Reprojection Error: 0.030 px
+  SE Secondary Crater  [832.0, 792.0] -> H-Projected Reprojection Error: 0.038 px
+  NE Ejecta Mound      [772.0, 232.0] -> H-Projected Reprojection Error: 0.036 px
+  SW Craterlet         [232.0, 812.0] -> H-Projected Reprojection Error: 0.082 px
+
+--- Ground Truth Breakdown: RELIT PAIR ---
+  Central Uplift Peak  [512.0, 512.0] -> Nearest Match Dist: 29.751 px
+  NW Rim Apex          [205.0, 205.0] -> Nearest Match Dist: 21.039 px
+  SE Rim Apex          [819.0, 819.0] -> Nearest Match Dist: 19.788 px
+  NE Rim Apex          [819.0, 205.0] -> Nearest Match Dist: 6.235 px
+  SW Rim Apex          [205.0, 819.0] -> Nearest Match Dist: 20.968 px
+  NW Secondary Crater  [212.0, 262.0] -> Nearest Match Dist: 35.629 px
+  SE Secondary Crater  [832.0, 792.0] -> Nearest Match Dist: 17.391 px
+  NE Ejecta Mound      [772.0, 232.0] -> Nearest Match Dist: 16.753 px
+  SW Craterlet         [232.0, 812.0] -> Nearest Match Dist: 418.199 px
+  Central Uplift Peak  [512.0, 512.0] -> H-Projected Reprojection Error: 0.037 px
+  NW Rim Apex          [205.0, 205.0] -> H-Projected Reprojection Error: 0.037 px
+  SE Rim Apex          [819.0, 819.0] -> H-Projected Reprojection Error: 0.033 px
+  NE Rim Apex          [819.0, 205.0] -> H-Projected Reprojection Error: 0.016 px
+  SW Rim Apex          [205.0, 819.0] -> H-Projected Reprojection Error: 0.076 px
+  NW Secondary Crater  [212.0, 262.0] -> H-Projected Reprojection Error: 0.040 px
+  SE Secondary Crater  [832.0, 792.0] -> H-Projected Reprojection Error: 0.030 px
+  NE Ejecta Mound      [772.0, 232.0] -> H-Projected Reprojection Error: 0.017 px
+  SW Craterlet         [232.0, 812.0] -> H-Projected Reprojection Error: 0.074 px
+
+======================================================================
+REAL LUNAR DATASET ABLATION SUMMARY TABLE
+======================================================================
+PAIR        | MATCHES | INLIERS (%) | MEAN CONF | H-PROJECTED RMSE | NEAREST RESIDUAL | BBOX COV
+RAW PAIR    |    7774 | 7703 (99.1%) |     0.743 | 0.051 px           | 485.427 px       | 92.6%
+RELIT PAIR  |    8613 | 8594 (99.8%) |     0.783 | 0.045 px           | 141.005 px       | 92.6%
+======================================================================

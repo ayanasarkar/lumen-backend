@@ -1,0 +1,59 @@
+=================================================================
+HONEST VALIDATION & ABLATION AUDIT: test_equatorial_site_01
+=================================================================
+
+[DIAGNOSTIC (d)] Resolution & Scaling Audit:
+  -> Source Image Shape    : (512, 512)
+  -> Raw Reference Shape   : (512, 512)
+  -> DEM Ingest Shape      : (512, 512) (Pixel scale: 2.0m)
+  -> Surface Normals Shape : (512, 512)
+
+[DIAGNOSTIC (c)] Radiometric & Local Contrast Audit:
+  -> Raw Ref   | Global Std: 5.01 | Mean 16x16 Patch Std: 4.99
+  -> Relit Ref | Global Std: 24.22 | Mean 16x16 Patch Std: 6.48
+[LoFTR] Initializing on cpu...
+
+[LoFTR] Matching Source vs RAW Reference...
+
+[LoFTR] Matching Source vs RELIT Reference...
+
+[DIAGNOSTIC (a)] RANSAC Parameter Parity:
+  -> Reprojection Threshold: 3.0 px (Identical for both)
+  -> Min Inliers Required   : 6 (Identical for both)
+
+[DIAGNOSTIC (b)] Spatial Match Distribution:
+  -> Raw Match Bounding-Box Coverage   : 82.9% of reference scene
+  -> Relit Match Bounding-Box Coverage : 57.8% of reference scene
+
+--- Ground Truth Breakdown: RAW PAIR ---
+  Point 1 [120.0, 140.0] -> Raw Uncorrected Nearest Match Dist: 20.261 px
+  Point 2 [250.0, 310.0] -> Raw Uncorrected Nearest Match Dist: 184.405 px
+  Point 3 [400.0, 180.0] -> Raw Uncorrected Nearest Match Dist: 115.527 px
+  Point 4 [300.0, 420.0] -> Raw Uncorrected Nearest Match Dist: 54.377 px
+  Point 5 [180.0, 220.0] -> Raw Uncorrected Nearest Match Dist: 81.687 px
+  Point 1 [120.0, 140.0] -> H-Projected Reprojection Error: 9.682 px
+  Point 2 [250.0, 310.0] -> H-Projected Reprojection Error: 73.960 px
+  Point 3 [400.0, 180.0] -> H-Projected Reprojection Error: 51.565 px
+  Point 4 [300.0, 420.0] -> H-Projected Reprojection Error: 133.299 px
+  Point 5 [180.0, 220.0] -> H-Projected Reprojection Error: 27.662 px
+
+--- Ground Truth Breakdown: RELIT PAIR ---
+  Point 1 [120.0, 140.0] -> Raw Uncorrected Nearest Match Dist: 219.055 px
+  Point 2 [250.0, 310.0] -> Raw Uncorrected Nearest Match Dist: 160.633 px
+  Point 3 [400.0, 180.0] -> Raw Uncorrected Nearest Match Dist: 290.356 px
+  Point 4 [300.0, 420.0] -> Raw Uncorrected Nearest Match Dist: 16.797 px
+  Point 5 [180.0, 220.0] -> Raw Uncorrected Nearest Match Dist: 143.998 px
+Traceback (most recent call last):
+  File "C:\Users\wriks\Videos\movies\LUMEN-AIML\ai-ml\run_real_validation.py", line 175, in <module>
+    run_evaluation("test_equatorial_site_01")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\wriks\Videos\movies\LUMEN-AIML\ai-ml\run_real_validation.py", line 164, in run_evaluation
+    h_rmse_relit, nn_relit = evaluate_metrics(H_relit, inliers_relit, mkpts0_relit, mkpts1_relit, gt_data, "RELIT PAIR")
+                             ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\wriks\Videos\movies\LUMEN-AIML\ai-ml\run_real_validation.py", line 144, in evaluate_metrics
+    print(f"  \u26a0\ufe0f RANSAC Transform Diverged: {h_rmse_str}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 2-3: character maps to <undefined>

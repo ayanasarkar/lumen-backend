@@ -1,0 +1,60 @@
+======================================================================
+LUMEN REAL-DATA BENCHMARK & ABLATION: real_equatorial_crater_01
+======================================================================
+
+[STEP 1: MULTI-RESOLUTION RATIO AUDIT]
+  -> OHRC Source Native Pixel Scale : 0.2500 m/px (1024x1024 px)
+  -> LRO NAC Reference Pixel Scale  : 0.2500 m/px (1024x1024 px)
+  -> SLDEM2015 Native Pixel Scale   : 59.0 m/px (4x4 cells)
+  -> DEM to OHRC Resolution Ratio   : 236.0x Resolution Disparity
+
+[STEP 3: RADIOMETRIC & DYNAMIC RANGE AUDIT]
+  -> RAW REF   | Range: [ 36, 163] | Global Std: 11.54 | Local Patch Std:  5.29
+  -> RELIT REF | Range: [ 34, 146] | Global Std: 11.56 | Local Patch Std:  4.80
+  -> Std Deviation Ratio (Relit / Raw): 1.00x (Target: ~1.0x to 1.5x)
+  -> Saved Visual Panel to: diagnostic_crops/real_site_ablation_side_by_side.png [Source | Raw Ref | Relit Ref]
+[LoFTR] Initializing on cpu...
+
+[LoFTR] Matching Source (OHRC) vs RAW Reference (NAC)...
+
+[LoFTR] Matching Source (OHRC) vs PRISM-RELIT Reference (NAC)...
+
+--- Ground Truth Breakdown: RAW PAIR ---
+  Crater Center Peak   [512.0, 512.0] -> Nearest Match Dist: 0.615 px
+  NW Rim Apex          [192.0, 192.0] -> Nearest Match Dist: 102.217 px
+  SE Rim Apex          [832.0, 832.0] -> Nearest Match Dist: 120.201 px
+  NW Sub-crater Rim    [332.0, 372.0] -> Nearest Match Dist: 120.022 px
+  SE Sub-crater Rim    [712.0, 672.0] -> Nearest Match Dist: 194.757 px
+  NE Ridge Boulder     [632.0, 332.0] -> Nearest Match Dist: 33.561 px
+  SW Craterlet         [372.0, 722.0] -> Nearest Match Dist: 36.116 px
+  Crater Center Peak   [512.0, 512.0] -> H-Projected Reprojection Error: 0.160 px
+  NW Rim Apex          [192.0, 192.0] -> H-Projected Reprojection Error: 0.145 px
+  SE Rim Apex          [832.0, 832.0] -> H-Projected Reprojection Error: 0.340 px
+  NW Sub-crater Rim    [332.0, 372.0] -> H-Projected Reprojection Error: 0.163 px
+  SE Sub-crater Rim    [712.0, 672.0] -> H-Projected Reprojection Error: 0.195 px
+  NE Ridge Boulder     [632.0, 332.0] -> H-Projected Reprojection Error: 0.071 px
+  SW Craterlet         [372.0, 722.0] -> H-Projected Reprojection Error: 0.539 px
+
+--- Ground Truth Breakdown: RELIT PAIR ---
+  Crater Center Peak   [512.0, 512.0] -> Nearest Match Dist: 0.658 px
+  NW Rim Apex          [192.0, 192.0] -> Nearest Match Dist: 102.477 px
+  SE Rim Apex          [832.0, 832.0] -> Nearest Match Dist: 120.041 px
+  NW Sub-crater Rim    [332.0, 372.0] -> Nearest Match Dist: 120.229 px
+  SE Sub-crater Rim    [712.0, 672.0] -> Nearest Match Dist: 194.720 px
+  NE Ridge Boulder     [632.0, 332.0] -> Nearest Match Dist: 33.428 px
+  SW Craterlet         [372.0, 722.0] -> Nearest Match Dist: 36.238 px
+  Crater Center Peak   [512.0, 512.0] -> H-Projected Reprojection Error: 0.107 px
+  NW Rim Apex          [192.0, 192.0] -> H-Projected Reprojection Error: 0.166 px
+  SE Rim Apex          [832.0, 832.0] -> H-Projected Reprojection Error: 0.114 px
+  NW Sub-crater Rim    [332.0, 372.0] -> H-Projected Reprojection Error: 0.049 px
+  SE Sub-crater Rim    [712.0, 672.0] -> H-Projected Reprojection Error: 0.103 px
+  NE Ridge Boulder     [632.0, 332.0] -> H-Projected Reprojection Error: 0.449 px
+  SW Craterlet         [372.0, 722.0] -> H-Projected Reprojection Error: 0.262 px
+
+======================================================================
+REAL LUNAR DATASET ABLATION SUMMARY TABLE
+======================================================================
+PAIR        | MATCHES | INLIERS (%) | MEAN CONF | H-PROJECTED RMSE | NEAREST RESIDUAL | BBOX COV
+RAW PAIR    |     510 | 163 (32.0%) |     0.359 | 0.273 px           | 106.679 px       | 92.6%
+RELIT PAIR  |     536 | 169 (31.5%) |     0.356 | 0.219 px           | 106.713 px       | 92.8%
+======================================================================

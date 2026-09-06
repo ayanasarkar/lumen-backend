@@ -1,0 +1,6 @@
+﻿modules = ["go-1.22", "python-3.11"]
+
+[nix]
+channel = "stable-24_05"
+
+run = "bash start.sh"

@@ -1,0 +1,55 @@
+====================================================================
+LUMEN LOG-COMPRESSION ABLATION: test_equatorial_site_01
+====================================================================
+
+[DIAGNOSTIC] Log-Space Tone Compression:
+  -> Softening Factor                  : 0.50
+  -> Raw Ratio Multiplier Range        : [0.0001, 56.1996]
+  -> Log-Compressed Ratio Range        : [0.6065, 1.6487]
+  -> Relit Unclipped Float Envelope    : [65.51, 225.34]
+
+[DIAGNOSTIC SUMMARY] Radiometric Summary:
+  -> RAW REF   | Range: [105, 150] | Global Std:  5.01 | Local Patch Std:  4.99
+  -> RELIT REF | Range: [ 65, 225] | Global Std: 12.98 | Local Patch Std:  6.23
+  -> Std Deviation Ratio (Relit / Raw): 2.59x (Target: ~1.0x to 1.5x)
+[LoFTR] Initializing on cpu...
+
+[LoFTR] Matching Source vs RAW Reference...
+
+[LoFTR] Matching Source vs RELIT Reference...
+
+[DIAGNOSTIC] Spatial Coverage:
+  -> Raw Match Bounding Box Coverage  : 82.9%
+  -> Relit Match Bounding Box Coverage: 59.6%
+
+--- Ground Truth Breakdown: RAW PAIR ---
+  Point 1 [120.0, 140.0] -> Raw Nearest Match Dist: 20.261 px
+  Point 2 [250.0, 310.0] -> Raw Nearest Match Dist: 184.405 px
+  Point 3 [400.0, 180.0] -> Raw Nearest Match Dist: 115.527 px
+  Point 4 [300.0, 420.0] -> Raw Nearest Match Dist: 54.377 px
+  Point 5 [180.0, 220.0] -> Raw Nearest Match Dist: 81.687 px
+  Point 1 [120.0, 140.0] -> H-Projected Reprojection Error: 9.682 px
+  Point 2 [250.0, 310.0] -> H-Projected Reprojection Error: 73.960 px
+  Point 3 [400.0, 180.0] -> H-Projected Reprojection Error: 51.565 px
+  Point 4 [300.0, 420.0] -> H-Projected Reprojection Error: 133.299 px
+  Point 5 [180.0, 220.0] -> H-Projected Reprojection Error: 27.662 px
+
+--- Ground Truth Breakdown: RELIT PAIR ---
+  Point 1 [120.0, 140.0] -> Raw Nearest Match Dist: 250.084 px
+  Point 2 [250.0, 310.0] -> Raw Nearest Match Dist: 160.676 px
+  Point 3 [400.0, 180.0] -> Raw Nearest Match Dist: 271.749 px
+  Point 4 [300.0, 420.0] -> Raw Nearest Match Dist: 54.101 px
+  Point 5 [180.0, 220.0] -> Raw Nearest Match Dist: 181.945 px
+  Point 1 [120.0, 140.0] -> H-Projected Reprojection Error: 183.984 px
+  Point 2 [250.0, 310.0] -> H-Projected Reprojection Error: 324.424 px
+  Point 3 [400.0, 180.0] -> H-Projected Reprojection Error: 212.067 px
+  Point 4 [300.0, 420.0] -> H-Projected Reprojection Error: 414.427 px
+  Point 5 [180.0, 220.0] -> H-Projected Reprojection Error: 248.045 px
+
+====================================================================
+HONEST ABLATION SUMMARY TABLE (POST LOG-COMPRESSION)
+====================================================================
+PAIR        | MATCHES | INLIERS (%) | MEAN CONF | H-PROJECTED RMSE | NEAREST RESIDUAL
+RAW PAIR    |      54 |  8 (14.8%) |     0.323 | 73.153 px        | 107.137 px
+RELIT PAIR  |      28 |  6 (21.4%) |     0.327 | 288.912 px       | 199.117 px
+====================================================================

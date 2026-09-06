@@ -1,0 +1,70 @@
+====================================================================
+DIAGNOSTIC PROOF & CORRECTION TERM AUDIT: test_equatorial_site_01
+====================================================================
+
+[DIAGNOSTIC 1] Sun Geometry Input Audit:
+  -> SOURCE Target Sun Geometry : Azimuth =   45.0 deg | Elevation =  45.0 deg
+     Source Cartesian Vector    : [0.5000, 0.5000, 0.7071]
+  -> REFERENCE Own Sun Geometry : Azimuth =  135.0 deg | Elevation =  50.0 deg
+     Ref Cartesian Vector       : [0.4545, -0.4545, 0.7660]
+  -> Angular Distance Between Vectors: 57.20 deg (Distinct if > 0)
+
+[DIAGNOSTIC 2] Intermediate Array Statistics:
+  -> new_multiplier (Target Shading)     : Min=0.0000 | Mean=0.8201 | Max=1.6899
+  -> reference_own_multiplier (Ref Shd)  : Min=0.0000 | Mean=0.8579 | Max=1.6709
+  -> correction (Target / Safe Ref)      : Min=0.0000 | Mean=1.2788 | Max=33.7198
+
+[DIAGNOSTIC 3] Execution Pipeline & Cast Check:
+  -> raw_ref_img float range             : [105.0, 150.0]
+  -> relit_unclipped (raw * correction)  : [0.0, 4779.4]
+  -> Fraction of unclipped pixels > 255  : 1.93%
+  -> Fraction of unclipped pixels == 0   : 2.49%
+  -> relit_final uint8 range             : [0, 255]
+
+[DIAGNOSTIC 4] Saved maps to 'diagnostic_crops/': correction_map.png, new_multiplier_map.png, ref_own_multiplier_map.png
+
+[DIAGNOSTIC SUMMARY] Radiometric Summary:
+  -> RAW REF   | Range: [105, 150] | Global Std:  5.01 | Local Patch Std:  4.99
+  -> RELIT REF | Range: [  0, 255] | Global Std: 29.77 | Local Patch Std:  7.91
+  -> Std Deviation Ratio (Relit / Raw): 5.95x
+[LoFTR] Initializing on cpu...
+
+[LoFTR] Matching Source vs RAW Reference...
+
+[LoFTR] Matching Source vs RELIT Reference...
+
+[DIAGNOSTIC] Spatial Coverage:
+  -> Raw Match Bounding Box Coverage  : 82.9%
+  -> Relit Match Bounding Box Coverage: 58.1%
+
+--- Ground Truth Breakdown: RAW PAIR ---
+  Point 1 [120.0, 140.0] -> Raw Nearest Match Dist: 20.261 px
+  Point 2 [250.0, 310.0] -> Raw Nearest Match Dist: 184.405 px
+  Point 3 [400.0, 180.0] -> Raw Nearest Match Dist: 115.527 px
+  Point 4 [300.0, 420.0] -> Raw Nearest Match Dist: 54.377 px
+  Point 5 [180.0, 220.0] -> Raw Nearest Match Dist: 81.687 px
+  Point 1 [120.0, 140.0] -> H-Projected Reprojection Error: 9.682 px
+  Point 2 [250.0, 310.0] -> H-Projected Reprojection Error: 73.960 px
+  Point 3 [400.0, 180.0] -> H-Projected Reprojection Error: 51.565 px
+  Point 4 [300.0, 420.0] -> H-Projected Reprojection Error: 133.299 px
+  Point 5 [180.0, 220.0] -> H-Projected Reprojection Error: 27.662 px
+
+--- Ground Truth Breakdown: RELIT PAIR ---
+  Point 1 [120.0, 140.0] -> Raw Nearest Match Dist: 290.893 px
+  Point 2 [250.0, 310.0] -> Raw Nearest Match Dist: 160.301 px
+  Point 3 [400.0, 180.0] -> Raw Nearest Match Dist: 145.511 px
+  Point 4 [300.0, 420.0] -> Raw Nearest Match Dist: 53.897 px
+  Point 5 [180.0, 220.0] -> Raw Nearest Match Dist: 225.242 px
+  Point 1 [120.0, 140.0] -> H-Projected Reprojection Error: 209.041 px
+  Point 2 [250.0, 310.0] -> H-Projected Reprojection Error: 223.052 px
+  Point 3 [400.0, 180.0] -> H-Projected Reprojection Error: 243.959 px
+  Point 4 [300.0, 420.0] -> H-Projected Reprojection Error: 184.339 px
+  Point 5 [180.0, 220.0] -> H-Projected Reprojection Error: 232.617 px
+
+====================================================================
+AUDIT SUMMARY TABLE
+====================================================================
+PAIR        | MATCHES | INLIERS (%) | MEAN CONF | H-PROJECTED RMSE | NEAREST RESIDUAL
+RAW PAIR    |      54 |  8 (14.8%) |     0.323 | 73.153 px        | 107.137 px
+RELIT PAIR  |      21 |  6 (28.6%) |     0.360 | 219.571 px       | 192.420 px
+====================================================================

@@ -1,0 +1,13 @@
+local_data/
+@'
+*.tif
+*.TIF
+*.img
+*.IMG
+*.zip
+*.ZIP
+*.png
+*.PNG
+ch2_*
+data/sites/*/results/*
+'@ | Set-Content -Path ".gitignore" -Encoding utf8

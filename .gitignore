@@ -11,3 +11,5 @@ lumen-backend
 
 # OS cruft
 .DS_Store
+
+one_product.json
